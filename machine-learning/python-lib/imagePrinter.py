@@ -3,14 +3,17 @@ import sys
 #import cv2
 from PIL import Image
 
-
+'''
+Remove cv2 from ImagePrinter
+But Keep its code as record
+'''
 class ImagePrinter:
 
     """
     cells format: (cellsInHeight, cellsInWidth)
     background: cell separate line color
     """
-    def __init__(self, cells, file="image", background=0.5):
+    def __init__(self, cells, file="", background=1.0):
         self.background = background 
         self.file = file
         # image size is 28, cellsize = image size + 1
@@ -42,7 +45,7 @@ class ImagePrinter:
         return indexes
         
     """
-    Add an image to printer
+    Add src image and test image to printer
     """
     def addImagePair(self, imgSrc, imgTest):
         imgSrc = imgSrc.reshape((28,28))
@@ -58,40 +61,51 @@ class ImagePrinter:
                 self.hcnt += 1
     
     """
-    print all added images
+    Add image to printer as both imgSrc and imgTest
     """
-    def printImg(self):
-        self.printHorizontal()
-        
+    def addImage(self, img):
+        img = img.reshape((28,28))
+        x = self.cellsize*self.wcnt
+        y = self.cellsize*self.hcnt
+        self.imgSrc[y:y+28,x:x+28] = img
+        self.imgTest[y:y+28,x:x+28] = img
+        self.wcnt += 1
+        if self.wcells == self.wcnt:
+            self.wcnt = 0
+            if self.hcnt < self.hcells-1:
+                self.hcnt += 1
+         
     """
     print two image sets vertcally
     """
-    def printVertical(self, title=''):
+    def printVertical(self):
         img = np.zeros((self.hcells*self.cellsize*2+10,self.wcells*self.cellsize))
         img.fill(self.background)
         img[0:self.hcells*self.cellsize,0:self.wcells*self.cellsize] = self.imgSrc
         img[self.hcells*self.cellsize+10:self.hcells*self.cellsize*2+10,
             0:self.wcells*self.cellsize] = self.imgTest
-        self.output(img, title)
+        self.output(img)
 
     """
     print two image sets horizontally
     """
-    def printHorizontal(self, title=''):
+    def printHorizontal(self):
         img = np.zeros((self.hcells*self.cellsize,self.wcells*self.cellsize*2+10))
         img.fill(self.background)
         img[0:self.hcells*self.cellsize,0:self.wcells*self.cellsize] = self.imgSrc
         img[0:self.hcells*self.cellsize,self.wcells*self.cellsize+10:self.wcells*self.cellsize*2+10] = self.imgTest
-        self.output(img, title)        
+        self.output(img)
 
-    def printFirst(self, title=''):
+    def printSingle(self):
         img = np.zeros((self.hcells*self.cellsize,self.wcells*self.cellsize))
         img.fill(self.background)
         img[0:self.hcells*self.cellsize,0:self.wcells*self.cellsize] = self.imgSrc
-        self.output(img, title)
+        self.output(img)
         
-    def output(self, img, title="original and modified test samples"):
-        self.pilOutput(img*255, title)
+    def output(self, img):
+        self.pilDisplay(img)
+        #self.pilSave(img)        
+
     '''
     def cv2Output(self, img, title="original and modified test samples"):
         cv2.imshow(title,img)
@@ -99,15 +113,21 @@ class ImagePrinter:
         cv2.destroyAllWindows()
         cv2.imwrite(self.file+'.png')
     '''
-    def pilOutput(self, img, title="not use"):
+    def pilDisplay(self, img):
+        img = img*255
         im = Image.fromarray(np.uint8(img),mode='P')
-        im.save(self.file+'.png')
         if(self.IPython):
-            print('* IPython.display')
+            # print('* IPython.display')
             from IPython.display import display
             display(im)
             #display(Image.open(self.file+'.png'))
         else:
-            print('* Image.show')
+            # print('* Image.show')
             im.show()
 
+    def pilSave(self, img):
+        if(self.file != ''):
+            img = img*255
+            im = Image.fromarray(np.uint8(img),mode='P')
+            im.save(self.file+'.png')
+ 
