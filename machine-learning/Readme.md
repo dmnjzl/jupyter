@@ -1,6 +1,6 @@
 # Machine Learning and Neural Network Model
 
-Machine Learning and Neural Network Model has two versions: [html](Machine Learning and Neural Network Model.html) and ipynb.
+Machine Learning and Neural Network Model has two versions: [html](./Machine-Learning-and-Neural-Network-Model.html) and ipynb.
 
 Click the above html link or the file in down folder to view it directly.
 
