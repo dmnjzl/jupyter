@@ -1,8 +1,8 @@
 # Machine Learning and Neural Network Model
 
-Machine Learning and Neural Network Model has two versions: [html](./Machine-Learning-and-Neural-Network-Model.html) and ipynb.
+Machine Learning and Neural Network Model has two versions: Machine-Learning-and-Neural-Network-Model.html and Machine-Learning-and-Neural-Network-Model.ipynb.
 
-Click the above html link or the file in down folder to view it directly.
+You can view  Machine-Learning-and-Neural-Network-Model.html by open it in down folder.
 
 ipynb version is provided for you to see how neural network model learns from [MNIST](http://yann.lecun.com/exdb/mnist/) data by running code cell in the file. However, the code requires python 3.7 and some additional pynum and pillow python libraries. Follow the steps below to install pillow and start jupyter notebook in Anaconda. pynum generally is automatically installed by Anaconda. If not, follow tthe steps about installing pillow below to install it. 
 
